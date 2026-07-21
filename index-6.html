@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS — Powering the Future of Digital Gaming</title>
+<meta name="description" content="NEXUS — trusted gaming services, top-ups, digital solutions, account services, hosting and technology-driven experiences.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#03050a;
+    --void-2:#060913;
+    --navy:#0a1024;
+    --navy-2:#0d1530;
+    --panel:#0b1226cc;
+    --line: rgba(140,170,220,.14);
+    --blue:#2fb6ff;
+    --blue-2:#5ad0ff;
+    --blue-deep:#0059ff;
+    --silver:#dbe2ec;
+    --silver-dim:#8a93a8;
+    --white:#f4f7fc;
+    --danger-glow: 0 0 40px rgba(47,182,255,.35);
+    --font-display:'Orbitron', sans-serif;
+    --font-label:'Rajdhani', sans-serif;
+    --font-body:'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--silver);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--blue); color:#000;}
+
+  /* scrollbar */
+  ::-webkit-scrollbar{width:8px;}
+  ::-webkit-scrollbar-track{background:var(--void);}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(var(--blue),var(--blue-deep)); border-radius:4px;}
+
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  img{display:block; max-width:100%;}
+  button{font-family:inherit; cursor:pointer;}
+  :focus-visible{outline:2px solid var(--blue); outline-offset:3px;}
+
+  .wrap{max-width:1240px; margin:0 auto; padding:0 clamp(20px,5vw,48px);}
+
+  .eyebrow{
+    font-family:var(--font-label);
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    font-size:12.5px;
+    color:var(--blue-2);
+    display:flex; align-items:center; gap:12px;
+  }
+  .eyebrow::before{content:''; width:26px; height:1px; background:linear-gradient(90deg,transparent,var(--blue));}
+
+  h1,h2,h3{font-family:var(--font-display); color:var(--white); font-weight:800; letter-spacing:.01em;}
+
+  .section-head{max-width:640px; margin-bottom:56px;}
+  .section-head h2{font-size:clamp(28px,4vw,42px); margin-top:14px; line-height:1.15;}
+  .section-head p{margin-top:16px; color:var(--silver-dim); font-size:15.5px; line-height:1.7;}
+
+  /* bevel panel = signature shape language, echoes the blade-cut corners of the logo */
+  .bevel{
+    --cut:16px;
+    clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  }
+  .bevel-sm{--cut:10px;}
+
+  /* ===== background atmosphere ===== */
+  .fx-bg{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;}
+  .fx-grid{
+    position:absolute; inset:-10% -10%;
+    background-image:
+      linear-gradient(rgba(70,140,220,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(70,140,220,.05) 1px, transparent 1px);
+    background-size:56px 56px;
+    mask-image: radial-gradient(ellipse 60% 50% at 50% 20%, black, transparent 75%);
+    opacity:.7;
+  }
+  .fx-glow{position:absolute; border-radius:50%; filter:blur(90px); opacity:.35;}
+  .fx-glow.g1{width:560px; height:560px; top:-160px; left:-120px; background:radial-gradient(circle, var(--blue-deep), transparent 70%);}
+  .fx-glow.g2{width:640px; height:640px; top:20%; right:-220px; background:radial-gradient(circle, var(--blue), transparent 70%); opacity:.18;}
+  .fx-glow.g3{width:520px; height:520px; bottom:-180px; left:30%; background:radial-gradient(circle, var(--blue-deep), transparent 70%); opacity:.22;}
+  .particle{position:absolute; width:2px; height:2px; background:var(--blue-2); border-radius:50%; box-shadow:0 0 6px 1px var(--blue-2); opacity:.6; animation:drift linear infinite;}
+  @keyframes drift{
+    0%{transform:translateY(0) translateX(0); opacity:0;}
+    10%{opacity:.8;}
+    90%{opacity:.5;}
+    100%{transform:translateY(-1100px) translateX(60px); opacity:0;}
+  }
+
+  /* ===== nav ===== */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    backdrop-filter:blur(16px);
+    background:rgba(3,5,10,.55);
+    border-bottom:1px solid var(--line);
+    transition:background .3s;
+  }
+  nav{display:flex; align-items:center; justify-content:space-between; padding:14px clamp(20px,5vw,48px);}
+  .brand{display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-size:20px; letter-spacing:.06em; color:var(--white);}
+  .brand .nx-logo{height:34px; width:34px; filter:drop-shadow(0 0 10px rgba(47,182,255,.5));}
+  .brand .brand-text span{color:var(--blue-2);}
+  .nav-links{display:flex; gap:34px; font-family:var(--font-label); font-weight:600; letter-spacing:.04em; font-size:15px;}
+  .nav-links a{color:var(--silver-dim); position:relative; padding:4px 0; transition:color .25s;}
+  .nav-links a::after{content:''; position:absolute; left:0; bottom:0; width:0; height:2px; background:var(--blue); transition:width .3s; box-shadow:0 0 8px var(--blue);}
+  .nav-links a:hover{color:var(--white);}
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{
+    font-family:var(--font-label); font-weight:700; font-size:14px; letter-spacing:.04em;
+    padding:10px 22px; color:#001522;
+    background:linear-gradient(135deg, var(--blue-2), var(--blue));
+    box-shadow:0 0 24px rgba(47,182,255,.4);
+    transition:transform .25s, box-shadow .25s;
+  }
+  .nav-cta:hover{transform:translateY(-2px); box-shadow:0 0 34px rgba(47,182,255,.65);}
+  .burger{display:none; flex-direction:column; gap:5px; background:none; border:0;}
+  .burger span{width:24px; height:2px; background:var(--silver);}
+
+  /* ===== hero ===== */
+  .hero{
+    position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:140px 0 100px; text-align:center; z-index:1;
+  }
+  .hero-ring{
+    position:relative; width:min(260px,42vw); aspect-ratio:1; margin:0 auto 8px;
+  }
+  .hero-ring::before, .hero-ring::after{
+    content:''; position:absolute; inset:-26px; border-radius:50%;
+    border:1px solid rgba(90,208,255,.25);
+  }
+  .hero-ring::before{animation:spin 22s linear infinite;}
+  .hero-ring::after{inset:-52px; border-style:dashed; border-color:rgba(90,208,255,.12); animation:spin 34s linear infinite reverse;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .hero-ring .nx-logo{
+    width:100%; height:100%; filter:drop-shadow(0 0 46px rgba(47,182,255,.55));
+    animation:float 6s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(0);} 50%{transform:translateY(-14px);}}
+
+  .hero h1{
+    font-size:clamp(32px, 5.4vw, 64px); line-height:1.08; margin-top:18px;
+    text-shadow:0 0 30px rgba(47,182,255,.25);
+  }
+  .hero h1 .accent{
+    background:linear-gradient(120deg, var(--blue-2), var(--blue), var(--blue-deep));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero-sub{
+    margin:22px auto 0; max-width:620px; font-family:var(--font-label);
+    color:var(--silver-dim); font-size:clamp(14px,1.6vw,17px); letter-spacing:.03em;
+  }
+  .hero-sub b{color:var(--blue-2); font-weight:600;}
+  .hero-actions{display:flex; gap:18px; justify-content:center; margin-top:42px; flex-wrap:wrap;}
+
+  .btn{
+    font-family:var(--font-label); font-weight:700; font-size:15px; letter-spacing:.05em;
+    padding:15px 34px; position:relative; transition:transform .25s, box-shadow .25s;
+  }
+  .btn-primary{
+    color:#001522; background:linear-gradient(135deg, var(--blue-2), var(--blue));
+    box-shadow:0 0 30px rgba(47,182,255,.45);
+  }
+  .btn-primary:hover{transform:translateY(-3px); box-shadow:0 0 44px rgba(47,182,255,.7);}
+  .btn-ghost{
+    color:var(--white); border:1px solid rgba(140,190,240,.35); background:rgba(20,30,55,.4);
+    backdrop-filter:blur(6px);
+  }
+  .btn-ghost:hover{border-color:var(--blue); box-shadow:0 0 24px rgba(47,182,255,.25); transform:translateY(-3px);}
+
+  .scroll-cue{
+    position:absolute; bottom:30px; left:50%; transform:translateX(-50%);
+    font-family:var(--font-label); font-size:11px; letter-spacing:.3em; color:var(--silver-dim);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+  }
+  .scroll-cue .line{width:1px; height:34px; background:linear-gradient(var(--blue), transparent); animation:scrolldown 1.8s ease-in-out infinite;}
+  @keyframes scrolldown{0%{opacity:0; transform:scaleY(0); transform-origin:top;} 40%{opacity:1; transform:scaleY(1); transform-origin:top;} 60%{opacity:1; transform:scaleY(1); transform-origin:bottom;} 100%{opacity:0; transform:scaleY(0); transform-origin:bottom;}}
+
+  /* ===== generic section ===== */
+  section{position:relative; z-index:1; padding:120px 0;}
+  .divider{height:1px; background:linear-gradient(90deg, transparent, var(--line), transparent);}
+
+  /* reveal on scroll */
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .8s ease, transform .8s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ===== about ===== */
+  .about-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:60px; align-items:center;}
+  .about-copy p{color:var(--silver-dim); line-height:1.85; font-size:15.5px; margin-bottom:18px;}
+  .about-copy p b{color:var(--silver);}
+  .about-stats{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-top:30px;}
+  .about-stats div{background:var(--void-2); padding:22px; text-align:center;}
+  .about-stats strong{display:block; font-family:var(--font-display); font-size:24px; color:var(--blue-2);}
+  .about-stats span{font-family:var(--font-label); font-size:12px; letter-spacing:.1em; color:var(--silver-dim); text-transform:uppercase;}
+  .about-visual{
+    position:relative; aspect-ratio:1; background:radial-gradient(circle at 50% 40%, rgba(47,182,255,.14), transparent 65%);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .about-visual .core{
+    width:70%; aspect-ratio:1; border:1px solid rgba(90,208,255,.3); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; position:relative;
+  }
+  .about-visual .core::before{content:''; position:absolute; inset:14%; border:1px dashed rgba(90,208,255,.2); border-radius:50%; animation:spin 40s linear infinite;}
+  .about-visual .core .nx-logo{width:52%; height:52%; filter:drop-shadow(0 0 30px rgba(47,182,255,.5)); animation:float 7s ease-in-out infinite;}
+
+  /* ===== cards base (bevel glass) ===== */
+  .glass{
+    background:linear-gradient(160deg, rgba(20,32,60,.55), rgba(6,10,20,.55));
+    border:1px solid var(--line);
+    position:relative; overflow:hidden;
+  }
+  .glass::before{
+    content:''; position:absolute; inset:0; padding:1px;
+    background:linear-gradient(160deg, rgba(90,208,255,.35), transparent 40%, transparent 70%, rgba(90,208,255,.15));
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+    pointer-events:none;
+  }
+  .glass:hover{transform:translateY(-6px); box-shadow:0 20px 50px -20px rgba(47,182,255,.35);}
+  .glass{transition:transform .35s ease, box-shadow .35s ease;}
+
+  /* scanline sweep on hover */
+  .scan{position:absolute; inset:0; overflow:hidden; pointer-events:none;}
+  .scan::after{
+    content:''; position:absolute; top:-120%; left:-20%; width:60%; height:340%;
+    background:linear-gradient(120deg, transparent, rgba(90,208,255,.16), transparent);
+    transform:rotate(12deg); transition:transform 1s ease;
+  }
+  .glass:hover .scan::after{transform:rotate(12deg) translateX(260%);}
+
+  /* ===== leadership ===== */
+  .lead-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:28px;}
+  .lead-card{padding:38px 34px;}
+  .lead-top{display:flex; align-items:center; gap:20px;}
+  .avatar{
+    width:74px; height:74px; flex:none; display:flex; align-items:center; justify-content:center;
+    padding:12px;
+    background:radial-gradient(circle at 35% 30%, rgba(47,182,255,.22), rgba(3,5,10,.9) 70%);
+    border:1px solid rgba(90,208,255,.35);
+    box-shadow:0 0 26px rgba(47,182,255,.4);
+    clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+  }
+  .avatar .nx-logo{width:100%; height:100%; filter:drop-shadow(0 0 6px rgba(47,182,255,.5));}
+  .lead-role{font-family:var(--font-label); letter-spacing:.2em; text-transform:uppercase; font-size:12px; color:var(--blue-2); margin-bottom:4px;}
+  .lead-name{font-family:var(--font-display); font-size:20px; color:var(--white);}
+  .lead-card p.bio{margin-top:18px; color:var(--silver-dim); font-size:14.5px; line-height:1.75;}
+
+  /* ===== partners ===== */
+  .partner-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
+  .partner-card{padding:34px 26px; text-align:center;}
+  .p-icon{width:52px; height:52px; margin:0 auto 18px; display:flex; align-items:center; justify-content:center;}
+  .p-icon svg{width:100%; height:100%;}
+  .partner-card h3{font-size:17px; letter-spacing:.03em;}
+  .partner-card p{margin-top:10px; font-size:13.5px; color:var(--silver-dim); line-height:1.6;}
+
+  /* ===== games ===== */
+  .game-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  .game-card{padding:0; perspective:800px;}
+  .game-inner{padding:30px 24px; transition:transform .4s ease;}
+  .game-card:hover .game-inner{transform:rotateX(4deg) rotateY(-4deg);}
+  .g-badge{
+    width:56px; height:56px; display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:900; font-size:20px; color:var(--void);
+    margin-bottom:20px;
+    clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  }
+  .game-card h3{font-size:18px;}
+  .game-card p{margin-top:8px; font-size:13.5px; color:var(--silver-dim); line-height:1.6;}
+  .game-tag{
+    display:inline-block; margin-top:16px; font-family:var(--font-label); font-size:11px;
+    letter-spacing:.15em; text-transform:uppercase; color:var(--blue-2);
+    border:1px solid rgba(90,208,255,.3); padding:4px 12px;
+  }
+  .game-link{
+    display:block; margin-top:16px; font-family:var(--font-label); font-weight:700; font-size:13.5px;
+    letter-spacing:.03em; color:var(--white); transition:color .25s, gap .25s; display:flex; align-items:center; gap:6px;
+  }
+  .game-link:hover{color:var(--blue-2); gap:10px;}
+
+  .store-banner{
+    margin-top:40px; padding:36px 42px; display:flex; align-items:center; justify-content:space-between; gap:30px; flex-wrap:wrap;
+  }
+  .store-banner h3{font-size:20px; margin-top:8px;}
+  .store-banner p{margin-top:8px; font-size:14px; color:var(--silver-dim);}
+  .store-banner .btn{flex:none;}
+
+  /* ===== features ===== */
+  .feat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:22px;}
+  .feat-card{padding:30px 22px;}
+  .feat-icon{width:44px; height:44px; margin-bottom:18px; color:var(--blue-2);}
+  .feat-icon svg{width:100%; height:100%;}
+  .feat-card h3{font-size:16px; letter-spacing:.02em;}
+  .feat-card p{margin-top:8px; font-size:13px; color:var(--silver-dim); line-height:1.6;}
+
+  /* ===== stats ===== */
+  .stats-band{
+    background:linear-gradient(180deg, rgba(10,16,36,.9), rgba(5,8,18,.9));
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .stats-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px; text-align:center;}
+  .stat-num{font-family:var(--font-display); font-size:clamp(30px,4vw,46px); color:var(--white); text-shadow:0 0 30px rgba(47,182,255,.4);}
+  .stat-num span{color:var(--blue-2);}
+  .stat-label{margin-top:10px; font-family:var(--font-label); letter-spacing:.15em; text-transform:uppercase; font-size:12px; color:var(--silver-dim);}
+
+  /* ===== contact ===== */
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:50px;}
+  .form-panel{padding:40px;}
+  .field{margin-bottom:20px;}
+  .field label{display:block; font-family:var(--font-label); font-size:12.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--silver-dim); margin-bottom:8px;}
+  .field input, .field textarea{
+    width:100%; background:rgba(255,255,255,.03); border:1px solid var(--line); color:var(--white);
+    padding:13px 14px; font-family:var(--font-body); font-size:14.5px; transition:border-color .25s, box-shadow .25s;
+  }
+  .field input:focus, .field textarea:focus{border-color:var(--blue); box-shadow:0 0 0 3px rgba(47,182,255,.15); outline:none;}
+  .field textarea{resize:vertical; min-height:110px;}
+  .submit-btn{width:100%; margin-top:6px;}
+  .contact-side{display:flex; flex-direction:column; gap:16px;}
+  .contact-chip{
+    display:flex; align-items:center; gap:16px; padding:20px 22px;
+  }
+  .contact-chip .ci{width:36px; height:36px; flex:none; color:var(--blue-2);}
+  .contact-chip .ci svg{width:100%; height:100%;}
+  .contact-chip h4{font-family:var(--font-label); font-size:15px; color:var(--white); letter-spacing:.02em;}
+  .contact-chip p{font-size:13px; color:var(--silver-dim); margin-top:2px;}
+  .contact-chip{transition:transform .25s, border-color .25s;}
+  .contact-chip:hover{transform:translateX(6px); border-color:rgba(90,208,255,.4);}
+
+  /* ===== footer ===== */
+  footer{border-top:1px solid var(--line); padding:60px 0 30px; position:relative; z-index:1;}
+  .footer-top{display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:40px; padding-bottom:40px;}
+  .footer-brand{display:flex; align-items:center; gap:12px;}
+  .footer-brand .nx-logo{height:40px; width:40px; filter:drop-shadow(0 0 12px rgba(47,182,255,.5));}
+  .footer-brand span{font-family:var(--font-display); font-size:22px; color:var(--white); letter-spacing:.05em;}
+  .footer-cols{display:flex; gap:70px; flex-wrap:wrap;}
+  .footer-col h5{font-family:var(--font-label); letter-spacing:.15em; text-transform:uppercase; font-size:12px; color:var(--blue-2); margin-bottom:14px;}
+  .footer-col p, .footer-col a{display:block; font-size:14px; color:var(--silver-dim); margin-bottom:8px; transition:color .2s;}
+  .footer-col a:hover{color:var(--blue-2);}
+  .footer-bottom{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+    padding-top:26px; border-top:1px solid var(--line);
+    font-family:var(--font-label); font-size:12.5px; color:var(--silver-dim); letter-spacing:.03em;
+  }
+  .footer-tagline{color:var(--blue-2); letter-spacing:.15em; text-transform:uppercase; font-size:11px;}
+
+  /* ===== responsive ===== */
+  @media (max-width:980px){
+    .nav-links, .nav-cta{display:none;}
+    .burger{display:flex;}
+    .about-grid, .contact-grid{grid-template-columns:1fr;}
+    .lead-grid, .partner-grid, .game-grid{grid-template-columns:repeat(2,1fr);}
+    .feat-grid{grid-template-columns:repeat(2,1fr);}
+    .stats-grid{grid-template-columns:repeat(2,1fr); gap:36px;}
+  }
+  @media (max-width:600px){
+    .lead-grid, .partner-grid, .game-grid, .feat-grid{grid-template-columns:1fr;}
+    section{padding:80px 0;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="fx-bg">
+  <div class="fx-grid"></div>
+  <div class="fx-glow g1"></div>
+  <div class="fx-glow g2"></div>
+  <div class="fx-glow g3"></div>
+  <div id="particles"></div>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="nxSilver" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.4" stop-color="#e3e9f2"/>
+      <stop offset="0.7" stop-color="#aab4c6"/>
+      <stop offset="1" stop-color="#707c93"/>
+    </linearGradient>
+    <linearGradient id="nxBlue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c7f4ff"/>
+      <stop offset="0.45" stop-color="#4fc8ff"/>
+      <stop offset="1" stop-color="#0047d6"/>
+    </linearGradient>
+    <filter id="nxSoftGlow" x="-70%" y="-70%" width="240%" height="240%">
+      <feGaussianBlur stdDeviation="5.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <symbol id="nx-logo-mark" viewBox="0 0 200 200">
+      <path d="M180.8,129.42 A86,86 0 0,1 19.19,129.42" fill="none" stroke="url(#nxBlue)" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+      <path d="M19.19,70.58 A86,86 0 0,1 180.8,70.58" fill="none" stroke="url(#nxBlue)" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+
+      <!-- soft depth shadow, offset behind the mark -->
+      <g transform="translate(5,7)" opacity="0.45">
+        <polygon points="46,16 66,26 66,142 42,180 26,160 34,40" fill="#000000"/>
+        <polygon points="130,16 150,26 150,150 176,190 150,186 134,142" fill="#000000"/>
+        <polygon points="58,120 128,40 150,58 64,148" fill="#000000"/>
+      </g>
+
+      <!-- blurred glow core behind the blue diagonal -->
+      <polygon points="58,120 128,40 150,58 64,148" fill="url(#nxBlue)" filter="url(#nxSoftGlow)"/>
+
+      <!-- left silver blade -->
+      <polygon points="46,16 66,26 66,142 42,180 26,160 34,40" fill="url(#nxSilver)" stroke="#39415a" stroke-width="1.2" stroke-linejoin="round"/>
+      <polygon points="46,16 66,26 58,90 38,80" fill="#ffffff" opacity="0.28"/>
+
+      <!-- right blue blade -->
+      <polygon points="130,16 150,26 150,150 176,190 150,186 134,142" fill="url(#nxBlue)" stroke="#00286b" stroke-width="1.2" stroke-linejoin="round"/>
+      <polygon points="130,16 150,26 144,90 130,80" fill="#ffffff" opacity="0.32"/>
+
+      <!-- crisp diagonal blade on top -->
+      <polygon points="58,120 128,40 150,58 64,148" fill="url(#nxBlue)" stroke="#00286b" stroke-width="1"/>
+      <polygon points="66,116 128,46 138,55 72,138" fill="#ffffff" opacity="0.35"/>
+
+      <!-- corner highlight sparks -->
+      <polygon points="46,16 54,20 40,60 34,56" fill="#ffffff" opacity="0.5"/>
+      <polygon points="176,190 165,183 170,168 179,175" fill="#ffffff" opacity="0.4"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header>
+  <nav class="wrap">
+    <div class="brand"><svg class="nx-logo" viewBox="0 0 200 200" role="img" aria-label="NEXUS logo"><use href="#nx-logo-mark"/></svg><span class="brand-text">NEXU<span>S</span></span></div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#leadership">Leadership</a></li>
+      <li><a href="#games">Games</a></li>
+      <li><a href="https://vibeszax527-cyber.github.io/nexus.topup/" target="_blank" rel="noopener">Top-up Store</a></li>
+      <li><a href="#features">Why Us</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="https://vibeszax527-cyber.github.io/nexus.topup/" target="_blank" rel="noopener" class="nav-cta bevel-sm">Top-up Now</a>
+    <button class="burger" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('mobile-open')"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-ring"><svg class="nx-logo" viewBox="0 0 200 200" role="img" aria-label="NEXUS logo"><use href="#nx-logo-mark"/></svg></div>
+    <h1>Powering the <span class="accent">Future</span> of<br>Digital Gaming</h1>
+    <p class="hero-sub"><b>Trusted Gaming Services</b> &nbsp;•&nbsp; <b>Digital Solutions</b> &nbsp;•&nbsp; <b>Premium Experience</b></p>
+    <div class="hero-actions">
+      <a href="https://vibeszax527-cyber.github.io/nexus.topup/" target="_blank" rel="noopener" class="btn btn-primary bevel-sm">Explore Services</a>
+      <a href="#contact" class="btn btn-ghost bevel-sm">Contact Us</a>
+    </div>
+  </div>
+  <div class="scroll-cue">SCROLL<div class="line"></div></div>
+</section>
+
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="about-copy reveal">
+      <div class="eyebrow">Who We Are</div>
+      <h2 style="margin-top:14px;">A digital ecosystem built for gamers</h2>
+      <p style="margin-top:22px;"><b>NEXUS</b> is a modern digital platform dedicated to gamers and online communities. We provide trusted gaming services, top-ups, digital solutions, account services, hosting, and technology-driven experiences — all in one place.</p>
+      <p>Our mission is to deliver fast, secure, and reliable services while maintaining the highest standards of quality and customer satisfaction.</p>
+      <div class="about-stats">
+        <div><strong>50K+</strong><span>Customers</span></div>
+        <div><strong>100K+</strong><span>Orders Done</span></div>
+        <div><strong>99.9%</strong><span>Uptime</span></div>
+        <div><strong>24/7</strong><span>Support</span></div>
+      </div>
+    </div>
+    <div class="about-visual reveal">
+      <div class="core"><svg class="nx-logo" viewBox="0 0 200 200" aria-hidden="true"><use href="#nx-logo-mark"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<section id="leadership">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Leadership</div>
+      <h2>The people behind NEXUS</h2>
+      <p>A small, focused team building a platform gamers can rely on.</p>
+    </div>
+    <div class="lead-grid">
+      <div class="lead-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="lead-top">
+          <div class="avatar"><svg class="nx-logo" viewBox="0 0 200 200" role="img" aria-label="NEXUS mark"><use href="#nx-logo-mark"/></svg></div>
+          <div>
+            <div class="lead-role">Founder</div>
+            <div class="lead-name">Rafi Shah</div>
+          </div>
+        </div>
+        <p class="bio">Founder of NEXUS, focused on building an innovative digital ecosystem for gamers and technology enthusiasts.</p>
+      </div>
+      <div class="lead-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="lead-top">
+          <div class="avatar"><svg class="nx-logo" viewBox="0 0 200 200" role="img" aria-label="NEXUS mark"><use href="#nx-logo-mark"/></svg></div>
+          <div>
+            <div class="lead-role">CEO</div>
+            <div class="lead-name">Zētrax</div>
+          </div>
+        </div>
+        <p class="bio">Leading NEXUS with a vision of innovation, performance, and customer-first service.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="partners">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Infrastructure</div>
+      <h2>Technology partners</h2>
+      <p>Built on platforms trusted by developers worldwide.</p>
+    </div>
+    <div class="partner-grid">
+      <div class="partner-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="p-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 1.5C6.2 1.5 1.5 6.2 1.5 12c0 4.64 3.01 8.58 7.19 9.97.53.1.72-.23.72-.51 0-.25-.01-1.08-.01-1.96-2.93.64-3.54-1.24-3.54-1.24-.48-1.22-1.17-1.55-1.17-1.55-.96-.65.07-.64.07-.64 1.06.07 1.62 1.09 1.62 1.09.94 1.61 2.47 1.15 3.07.88.1-.68.37-1.15.67-1.42-2.34-.27-4.8-1.17-4.8-5.2 0-1.15.41-2.09 1.08-2.83-.11-.27-.47-1.35.1-2.81 0 0 .88-.28 2.89 1.08a10 10 0 0 1 5.26 0c2-1.36 2.88-1.08 2.88-1.08.58 1.46.21 2.54.1 2.81.68.74 1.08 1.68 1.08 2.83 0 4.04-2.47 4.93-4.82 5.19.38.33.72.97.72 1.96 0 1.42-.01 2.56-.01 2.91 0 .28.19.62.73.51A10.51 10.51 0 0 0 22.5 12c0-5.8-4.7-10.5-10.5-10.5Z" fill="#dbe2ec"/></svg>
+        </div>
+        <h3>GitHub</h3>
+        <p>Version control and open-source collaboration for every NEXUS release.</p>
+      </div>
+      <div class="partner-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="p-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 20V4l14 8-14 8Z" stroke="#5ad0ff" stroke-width="1.6" stroke-linejoin="round" fill="rgba(47,182,255,.15)"/><path d="M18 4v16" stroke="#5ad0ff" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Railway</h3>
+        <p>Instant deployment and scalable backend infrastructure for our services.</p>
+      </div>
+      <div class="partner-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="p-icon">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#5ad0ff" stroke-width="1.6"/><path d="M8 15V9l8 6V9" stroke="#5ad0ff" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Render</h3>
+        <p>Reliable cloud hosting keeping NEXUS online around the clock.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="games">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Coverage</div>
+      <h2>Supported games</h2>
+      <p>Top-ups, boosts and account services across the titles you actually play.</p>
+    </div>
+    <div class="game-grid">
+      <div class="game-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="game-inner">
+          <div class="g-badge" style="background:linear-gradient(135deg,#ff9d5a,#ff5a5a)">FF</div>
+          <h3>Free Fire</h3>
+          <p>Diamonds, top-ups and exclusive bundles delivered instantly.</p>
+          <span class="game-tag">Battle Royale</span>
+          <a class="game-link" href="https://vibeszax527-cyber.github.io/nexus.topup/" target="_blank" rel="noopener">Top-up Now →</a>
+        </div>
+      </div>
+      <div class="game-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="game-inner">
+          <div class="g-badge" style="background:linear-gradient(135deg,#f2c94c,#e0a624)">PB</div>
+          <h3>PUBG Mobile</h3>
+          <p>UC top-ups and season pass services with secure delivery.</p>
+          <span class="game-tag">Battle Royale</span>
+          <a class="game-link" href="https://vibeszax527-cyber.github.io/nexus.topup/" target="_blank" rel="noopener">Top-up Now →</a>
+        </div>
+      </div>
+      <div class="game-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="game-inner">
+          <div class="g-badge" style="background:linear-gradient(135deg,#ff4655,#a6222c)">VL</div>
+          <h3>Valorant</h3>
+          <p>Points, skins and account services for competitive players.</p>
+          <span class="game-tag">Tactical FPS</span>
+          <a class="game-link" href="https://vibeszax527-cyber.github.io/nexus.topup/" target="_blank" rel="noopener">Top-up Now →</a>
+        </div>
+      </div>
+      <div class="game-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="game-inner">
+          <div class="g-badge" style="background:linear-gradient(135deg,#5ad0ff,#2f6bff)">FN</div>
+          <h3>Fortnite</h3>
+          <p>V-Bucks, battle passes and cosmetic bundles, made simple.</p>
+          <span class="game-tag">Battle Royale</span>
+          <a class="game-link" href="https://vibeszax527-cyber.github.io/nexus.topup/" target="_blank" rel="noopener">Top-up Now →</a>
+        </div>
+      </div>
+      <div class="game-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="game-inner">
+          <div class="g-badge" style="background:linear-gradient(135deg,#8ac24a,#4a7c1f)">CoC</div>
+          <h3>Clash of Clans</h3>
+          <p>Gems and gold pass top-ups to keep your village growing.</p>
+          <span class="game-tag">Strategy</span>
+          <a class="game-link" href="https://vibeszax527-cyber.github.io/nexus.topup/" target="_blank" rel="noopener">Top-up Now →</a>
+        </div>
+      </div>
+      <div class="game-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="game-inner">
+          <div class="g-badge" style="background:linear-gradient(135deg,#b26aff,#6a2fd6)">ML</div>
+          <h3>Mobile Legends</h3>
+          <p>Diamonds and starlight member top-ups across every region.</p>
+          <span class="game-tag">MOBA</span>
+          <a class="game-link" href="https://vibeszax527-cyber.github.io/nexus.topup/" target="_blank" rel="noopener">Top-up Now →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="store-banner glass bevel reveal">
+      <div class="scan"></div>
+      <div>
+        <div class="eyebrow">Live Store</div>
+        <h3>Nexus Topup — verified delivery, real support</h3>
+        <p>bKash, Nagad &amp; Rocket accepted. Instant delivery on most orders.</p>
+      </div>
+      <a href="https://vibeszax527-cyber.github.io/nexus.topup/" target="_blank" rel="noopener" class="btn btn-primary bevel-sm">Visit Top-up Store</a>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Why NEXUS</div>
+      <h2>Built for reliability at speed</h2>
+      <p>Every order runs through the same standard, regardless of size.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2 3 14h7l-1 8 11-14h-7l0-6Z" stroke="#5ad0ff" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <h3>Fast &amp; Secure</h3>
+        <p>Encrypted checkout and near-instant delivery on every order.</p>
+      </div>
+      <div class="feat-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.5-9.2C.9 8 2.6 4.5 6 4c2-.3 3.6.7 6 3 2.4-2.3 4-3.3 6-3 3.4.5 5.1 4 3.5 7.8C19 16.5 12 21 12 21Z" stroke="#5ad0ff" stroke-width="1.5"/></svg></div>
+        <h3>24/7 Support</h3>
+        <p>A team on standby around the clock for every ticket.</p>
+      </div>
+      <div class="feat-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3Z" stroke="#5ad0ff" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <h3>Trusted Platform</h3>
+        <p>A track record customers keep coming back to.</p>
+      </div>
+      <div class="feat-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 20h4V10H4v10Zm6 0h4V4h-4v16Zm6 0h4v-7h-4v7Z" fill="#5ad0ff"/></svg></div>
+        <h3>Premium Experience</h3>
+        <p>A polished flow from browsing to checkout.</p>
+      </div>
+      <div class="feat-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2 3 14h7l-1 8 11-14h-7l0-6Z" stroke="#5ad0ff" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <h3>Lightning Delivery</h3>
+        <p>Most orders processed and delivered within minutes.</p>
+      </div>
+      <div class="feat-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#5ad0ff" stroke-width="1.5"/><path d="M12 7v5l3 3" stroke="#5ad0ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h3>Modern Technology</h3>
+        <p>Built on infrastructure that scales with demand.</p>
+      </div>
+      <div class="feat-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="#5ad0ff" stroke-width="1.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#5ad0ff" stroke-width="1.5"/><circle cx="17" cy="9" r="2.2" stroke="#5ad0ff" stroke-width="1.3"/><path d="M15.2 14c2.7.3 4.8 2.6 4.8 5.4" stroke="#5ad0ff" stroke-width="1.3"/></svg></div>
+        <h3>Professional Team</h3>
+        <p>Experienced hands behind every service we offer.</p>
+      </div>
+      <div class="feat-card glass bevel reveal">
+        <div class="scan"></div>
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3Z" stroke="#5ad0ff" stroke-width="1.5" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="#5ad0ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Maximum Security</h3>
+        <p>Layered protection around every transaction and account.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-band">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="reveal"><div class="stat-num" data-count="50000" data-suffix="+"><span>0</span></div><div class="stat-label">Customers</div></div>
+      <div class="reveal"><div class="stat-num" data-count="100000" data-suffix="+"><span>0</span></div><div class="stat-label">Orders</div></div>
+      <div class="reveal"><div class="stat-num" data-count="99.9" data-decimal="1" data-suffix="%"><span>0</span></div><div class="stat-label">Uptime</div></div>
+      <div class="reveal"><div class="stat-num" style="font-size:clamp(30px,4vw,46px)"><span>24/7</span></div><div class="stat-label">Support</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Get In Touch</div>
+      <h2>Talk to the NEXUS team</h2>
+      <p>Questions about an order, a partnership, or just want to say hi.</p>
+    </div>
+    <div class="contact-grid">
+      <form class="form-panel glass bevel reveal" onsubmit="event.preventDefault(); this.querySelector('.submit-btn').textContent='Message Sent ✓';">
+        <div class="field"><label for="name">Name</label><input id="name" type="text" placeholder="Your name" required></div>
+        <div class="field"><label for="email">Email</label><input id="email" type="email" placeholder="you@email.com" required></div>
+        <div class="field"><label for="msg">Message</label><textarea id="msg" placeholder="How can we help?" required></textarea></div>
+        <button type="submit" class="btn btn-primary bevel-sm submit-btn">Send Message</button>
+      </form>
+      <div class="contact-side reveal">
+        <a href="#" class="contact-chip glass bevel-sm">
+          <div class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4V5Z" stroke="#5ad0ff" stroke-width="1.5"/><path d="m4 6 8 7 8-7" stroke="#5ad0ff" stroke-width="1.5"/></svg></div>
+          <div><h4>Live Chat</h4><p>Talk to support in real time</p></div>
+        </a>
+        <a href="#" class="contact-chip glass bevel-sm">
+          <div class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M4 8.5c0-1.5 2-4.5 8-4.5s8 3 8 4.5c0 4-3 8.5-8 10.5-5-2-8-6.5-8-10.5Z" stroke="#5ad0ff" stroke-width="1.5"/><circle cx="9" cy="9" r="1.3" fill="#5ad0ff"/><circle cx="15" cy="9" r="1.3" fill="#5ad0ff"/></svg></div>
+          <div><h4>Discord</h4><p>Join the NEXUS community server</p></div>
+        </a>
+        <a href="#" class="contact-chip glass bevel-sm">
+          <div class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M14 9V7a2 2 0 0 1 2-2h2V2h-2a5 5 0 0 0-5 5v2H8v3h3v9h3v-9h2.5l.5-3H14Z" fill="#5ad0ff"/></svg></div>
+          <div><h4>Facebook</h4><p>Follow updates and announcements</p></div>
+        </a>
+        <a href="#" class="contact-chip glass bevel-sm">
+          <div class="ci"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4V5Z" stroke="#5ad0ff" stroke-width="1.5"/><path d="m4 6 8 7 8-7" stroke="#5ad0ff" stroke-width="1.5"/></svg></div>
+          <div><h4>Email Support</h4><p>support@nexus.gg</p></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand"><svg class="nx-logo" viewBox="0 0 200 200" role="img" aria-label="NEXUS logo"><use href="#nx-logo-mark"/></svg><span>NEXUS</span></div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Leadership</h5>
+          <p>Founder — Rafi Shah</p>
+          <p>CEO — Zētrax</p>
+        </div>
+        <div class="footer-col">
+          <h5>Infrastructure</h5>
+          <a href="#">GitHub</a>
+          <a href="#">Railway</a>
+          <a href="#">Render</a>
+        </div>
+        <div class="footer-col">
+          <h5>Navigate</h5>
+          <a href="#about">About</a>
+          <a href="#games">Games</a>
+          <a href="https://vibeszax527-cyber.github.io/nexus.topup/" target="_blank" rel="noopener">Top-up Store</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 NEXUS. All Rights Reserved.</span>
+      <span class="footer-tagline">Connect. Play. Elevate.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ambient particles
+  const pc = document.getElementById('particles');
+  for(let i=0;i<34;i++){
+    const p = document.createElement('div');
+    p.className='particle';
+    p.style.left = Math.random()*100+'%';
+    p.style.bottom = (-20 - Math.random()*40) + 'px';
+    p.style.animationDuration = (8+Math.random()*10)+'s';
+    p.style.animationDelay = (Math.random()*10)+'s';
+    pc.appendChild(p);
+  }
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // header bg on scroll
+  const header = document.querySelector('header');
+  window.addEventListener('scroll', ()=>{
+    header.style.background = window.scrollY>40 ? 'rgba(3,5,10,.85)' : 'rgba(3,5,10,.55)';
+  });
+
+  // animated counters
+  const counters = document.querySelectorAll('.stat-num[data-count]');
+  const countIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const el = e.target;
+        const target = parseFloat(el.dataset.count);
+        const decimals = parseInt(el.dataset.decimal||'0');
+        const suffix = el.dataset.suffix || '';
+        const span = el.querySelector('span');
+        const dur = 1800; const start = performance.now();
+        function tick(now){
+          const p = Math.min(1,(now-start)/dur);
+          const eased = 1-Math.pow(1-p,3);
+          const val = target*eased;
+          span.textContent = (decimals? val.toFixed(decimals) : Math.floor(val).toLocaleString()) + suffix;
+          if(p<1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        countIO.unobserve(el);
+      }
+    });
+  }, {threshold:.5});
+  counters.forEach(c=>countIO.observe(c));
+
+  // subtle mouse parallax on hero ring
+  const ring = document.querySelector('.hero-ring');
+  window.addEventListener('mousemove', (e)=>{
+    if(!ring) return;
+    const x = (e.clientX/window.innerWidth - .5) * 14;
+    const y = (e.clientY/window.innerHeight - .5) * 14;
+    ring.style.transform = `translate(${x}px, ${y}px)`;
+  });
+</script>
+</body>
+</html>
